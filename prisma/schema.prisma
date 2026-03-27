@@ -1,0 +1,16 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Place {
+  id          Int     @id @default(autoincrement())
+  title       String  @db.VarChar
+  description String  @db.VarChar
+  avg_rating  Decimal @db.Decimal
+  image       String  @db.VarChar
+}

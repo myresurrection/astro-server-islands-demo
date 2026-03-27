@@ -1,0 +1,37 @@
+---
+import { actions } from "astro:actions";
+import { AvailabilitySchema } from "../schemas";
+
+interface Props {
+    placeId: string;
+}
+
+const { placeId } = Astro.props;
+
+// const data = await actions.getAvailabilityById.orThrow(placeId);
+
+const { data, error } = await Astro.callAction(
+    actions.getAvailabilityById,
+    placeId,
+);
+
+const place = AvailabilitySchema.safeParse(data);
+
+if (!place.success) {
+    console.error("Failed to parse availability data:", place.error);
+    throw new Error("Invalid availability data");
+}
+
+const { isAvailable, message } = place.data;
+
+
+
+---
+
+{
+    isAvailable ? (
+        <p class="bg-blue-300 mt-5 text-center rounded-xl p-2">{message}</p>
+    ) : (
+        <p class="bg-red-300 mt-5 text-center rounded-xl p-2">{message}</p>
+    )
+}

@@ -1,0 +1,22 @@
+---
+import { actions } from "astro:actions";
+import MainLayout from "../layouts/MainLayout.astro";
+import PlaceCard from "../components/PlaceCard.astro";
+import { PlacesSchema } from "../schemas";
+
+const { data, error } = await Astro.callAction(actions.getPlaces,{});
+const places =  PlacesSchema.safeParse(data);
+
+
+---
+
+<MainLayout>
+	<h1 class="text-3xl font-extrabold">Lugares</h1>
+	<!-- // TODO: Mostrar los lugares para reseñas -->
+
+	<div class="grid grid-cols-3 gap-4">
+		{places.success && places.data.map((place) => (
+			<PlaceCard place={place} />
+		))}
+	</div>
+</MainLayout>
